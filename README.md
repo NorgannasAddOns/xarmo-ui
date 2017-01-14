@@ -2,7 +2,7 @@
 
 This is the Xarmo white-label user interface that Xarmo publishers can install and modify for self-hosted or partially self-hosted customers.
 
-The publisher will typically configure, compile and depluy this white-label website as per their branding and marketing requirements for their affiliates to use to manage their affiliate account with the publisher.
+The publisher will typically configure, compile and deploy this white-label website as per their branding and marketing requirements for their affiliates to use to manage their affiliate account with the publisher.
 
 This typically involves real-time viewing of their statistics, setting their payment methods, viewing payments, retrieving assets, updating tax details, etc.
   
