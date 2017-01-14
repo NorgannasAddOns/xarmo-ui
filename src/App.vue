@@ -19,8 +19,10 @@
 <script>
 export default {
   name: 'app',
-  data: {
-    loggedIn: false,
+  data () {
+    return {
+      logged_in: false,
+    }
   },
 }
 </script>
@@ -34,4 +36,10 @@ export default {
 
     margin 10px auto
     max-width 1200px
+
+    .el-form-item.is-required
+    .el-form-item__label:before
+      content "*"
+      color #ff4949
+      margin-right 4px
 </style>

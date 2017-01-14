@@ -1,19 +1,20 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import VueResource from 'vue-resource';
-import locale from 'element-ui/lib/locale/lang/en';
-import ElementUI from 'element-ui';
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import VueResource from 'vue-resource'
+import locale from 'element-ui/lib/locale/lang/en'
+import ElementUI from 'element-ui'
 
 import App from './App'
-import Home from './components/Home'
+import Home from './views/Home'
+import Login from './views/Login'
 
-import '../theme/index.css';
+import '../theme/index.css'
 
-Vue.use(VueResource);
-Vue.use(VueRouter);
-Vue.use(ElementUI, { locale });
+Vue.use(VueResource)
+Vue.use(VueRouter)
+Vue.use(ElementUI, { locale })
 
 const router = new VueRouter({
   mode: 'history',
@@ -24,7 +25,7 @@ const router = new VueRouter({
     },
     {
       path: '/login',
-      component: Home,
+      component: Login,
       meta: {
         title: 'Login',
       },
@@ -44,20 +45,20 @@ const router = new VueRouter({
       },
     },
   ],
-});
+})
 
 let auth = {
   loggedIn: function () {
-    return false;
+    return false
   },
-};
+}
 
-const defaultTitle = document.title;
+const defaultTitle = document.title
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
-    document.title = to.meta.title + ' - ' + defaultTitle;
+    document.title = to.meta.title + ' - ' + defaultTitle
   } else {
-    document.title = defaultTitle;
+    document.title = defaultTitle
   }
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -65,16 +66,16 @@ router.beforeEach((to, from, next) => {
       next({
         path: '/login',
         query: {redirect: to.fullPath}
-      });
-      return;
+      })
+      return
     }
   }
-  next();
-});
+  next()
+})
 
 /* eslint-disable no-new, no-unused-vars */
 const vue = new Vue({
   router,
   el: '#app',
   render: h => h(App),
-});
+})
