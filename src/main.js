@@ -5,56 +5,103 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import locale from 'element-ui/lib/locale/lang/en'
 import ElementUI from 'element-ui'
+import Mint from 'mint-ui'
 
 import App from './App'
-import Home from './views/Home'
-import Login from './views/Login'
 
 import '../theme/index.css'
+import 'mint-ui/lib/style.css'
+import './assets/page.css'
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
 Vue.use(ElementUI, { locale })
+Vue.use(Mint);
 
 const router = new VueRouter({
   mode: 'history',
   routes: [
     {
       path: '/',
-      component: Home,
+      component: require('./views/Home'),
     },
     {
       path: '/login',
-      component: Login,
+      component: require('./views/Login'),
       meta: {
         title: 'Login',
       },
     },
     {
       path: '/create',
-      component: Home,
+      component: require('./views/Create'),
       meta: {
         title: 'Create an account',
       },
     },
     {
       path: '/report',
-      component: Home,
+      component: require('./views/Report'),
       meta: {
+        title: 'Reports',
         requiresAuth: true,
       },
     },
   ],
 })
 
-let auth = {
-  loggedIn: function () {
-    return false
+/* eslint-disable no-new, no-unused-vars */
+const vue = new Vue({
+  router,
+  el: '#app',
+  data() {
+    return {
+      // TODO these should be stateful between page loads via LocalStorage preferably.
+      username: false,
+      sessionToken: false,
+    }
   },
+  methods: {
+    login(username, password) {
+      this.username = username
+      let path = this.$route.query.redirect;
+
+      if (!path) {
+        path = '/'
+      }
+
+      console.log('Pushing', path)
+      this.$router.push(path)
+    },
+    logout() {
+      this.username = false
+    }
+  },
+  computed: {
+    isLoggedIn() {
+      return this.username !== false
+    },
+    loggedInAs() {
+      return this.username !== false ? this.username : 'guest user'
+    },
+  },
+  mounted() {
+    setTimeout(pageReady, 0)
+  },
+  render: h => h(App),
+})
+
+function pageReady() {
+  // TODO check user is actually logged in, and sessionToken is valid.
+  checkNavigation(vue.$route, null, (where) => {
+    if (where) {
+      vue.$router.push(where)
+    }
+  })
 }
 
 const defaultTitle = document.title
-router.beforeEach((to, from, next) => {
+function checkNavigation(to, from, next) {
   if (to.meta.title) {
     document.title = to.meta.title + ' - ' + defaultTitle
   } else {
@@ -62,7 +109,7 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!auth.loggedIn()) {
+    if (!vue.isLoggedIn) {
       next({
         path: '/login',
         query: {redirect: to.fullPath}
@@ -71,11 +118,6 @@ router.beforeEach((to, from, next) => {
     }
   }
   next()
-})
+}
 
-/* eslint-disable no-new, no-unused-vars */
-const vue = new Vue({
-  router,
-  el: '#app',
-  render: h => h(App),
-})
+router.beforeEach(checkNavigation)

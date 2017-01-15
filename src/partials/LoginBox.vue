@@ -7,12 +7,13 @@
       <el-form-item label="Password" prop="password">
         <el-input type="password" v-model="login.password"></el-input>
       </el-form-item>
+      <el-form-item label="">
+        <mt-switch v-model="login.remember">Remember me</mt-switch>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('login')">Login</el-button>
       </el-form-item>
     </el-form>
-
-    {{login.email}} / {{login.password}}
   </div>
 </template>
 <script>
@@ -22,6 +23,7 @@
         login: {
           email: '',
           password: '',
+          remember: false,
         },
         rules: {
           email: [
@@ -53,7 +55,8 @@
       },
 
       performLogin() {
-        alert('Process login for:\n email: ' + this.login.email + '\n password: ' + this.login.password)
+        alert('TODO: Process login for:\n email: ' + this.login.email + '\n password: ' + this.login.password)
+        this.$root.login(this.login.email, this.login.password)
       },
     }
   }

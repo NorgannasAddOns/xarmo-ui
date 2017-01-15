@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <el-menu default-active="1" mode="horizontal" router>
-      <el-menu-item index="/"><img src="/static/horizontal.png" height="18"/></el-menu-item>
-      <template v-if="logged_in">
-        <el-menu-item index="/list">Reports list</el-menu-item>
+      <el-menu-item index="/" class="logo"/>
+      <template v-if="$root.isLoggedIn">
+        <el-menu-item index="/report">Reports list</el-menu-item>
       </template>
       <template v-else>
         <el-menu-item index="/login">Login</el-menu-item>
@@ -21,7 +21,6 @@ export default {
   name: 'app',
   data () {
     return {
-      logged_in: false,
     }
   },
 }
@@ -36,6 +35,25 @@ export default {
 
     margin 10px auto
     max-width 1200px
+
+    .logo
+      background-image url('/static/horizontal.png')
+      background-repeat no-repeat
+      background-size auto 18px
+      background-position 16px 20px
+      width 166px
+
+    @media (max-width: 700px)
+      .el-menu .el-menu-item
+        font-size 12px
+        vertical-align top
+        padding 0 10px
+
+      .logo
+        background-image url('/static/icon.png')
+        background-size auto 18px
+        background-position 16px 20px
+        width 50px
 
     .el-form-item.is-required
     .el-form-item__label:before
